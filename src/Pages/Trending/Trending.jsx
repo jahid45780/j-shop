@@ -1,23 +1,28 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCart from "./ProductCart";
 import Paginate from "../../components/Paginate";
-import { useSearchParams } from "react-router-dom";
-
+import allProducts from "../../data";
+import Buttons from "./Buttons";
 
 const Trending = () => {
+  const [originalProduct, setOriginalProduct] = useState([]); // Store the original product list
+  const [product, setProduct] = useState([]);
 
-  const [product, setProduct] = useState([])
+  // const menuItems = [...new Set(originalProduct.map((val) => val.category))];
+  const allProductsButton = [...new Set(allProducts.map((product) => product.category))];
 
-
+  const filterItems = (cat) => {
+    if (cat === "all") {
+      setProduct(originalProduct); // Reset to the full product list if "all" is clicked
+    } else {
+      const newItem = originalProduct.filter((newval) => newval.category === cat);
+      setProduct(newItem);
+    }
+  };
 
   // Paginate logic
-
-  // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-
-
   const currentProducts = product.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage);
 
   function paginate(number) {
@@ -37,49 +42,40 @@ const Trending = () => {
       setCurrentPage(currentPage - 1);
     }
   }
-  // Paginate logic
-
 
   useEffect(() => {
-    fetch('trending.json')
-      .then(res => res.json())
-      .then(data => setProduct(data))
-
-
-  }, [])
+    fetch("trending.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setOriginalProduct(data); // Set the original product list
+        setProduct(data); // Set the product list for rendering
+      });
+  }, []);
 
   return (
-    <div className=" max-w-6xl mx-auto  mt-4" >
-      {/* <div className=" pt-4 flex items-center justify-between gap-3 overflow-x-auto text-3xl m-4 font-bold" >
-        {
-          categories.map((category, index) => (
-            <button
-              key={index}
-              name={category}
-              onClick={handleSelectCategory}
-            > <h1
-
-              className=" border-2 border-red-400 p-3 rounded-lg" > {category} </h1> </button>
-          ))
-        }
-      </div> */}
-
-      <div className=" grid lg:grid-cols-3 grid-cols-1 items-center justify-center gap-3" >
-        {
-          currentProducts.map(product => <ProductCart key={product.id} productCart={product} ></ProductCart>)
-        }
+    <div className="max-w-6xl mx-auto mt-4">
+      <div>
+        <Buttons
+          menuItems={allProductsButton}
+          filterItems={filterItems}
+          setProduct={setProduct}
+        />
       </div>
+
+      <div className="grid lg:grid-cols-3 grid-cols-1 items-center justify-center gap-3 mt">
+        {currentProducts.map((product) => (
+          <ProductCart key={product.id} productCart={product} />
+        ))}
+      </div>
+
       <Paginate
         productsPerPage={productsPerPage}
         product={product.length}
         paginate={paginate}
         onPrevOrNextClick={handlePrevOrNextClick}
       />
-
     </div>
   );
 };
-
-
 
 export default Trending;
