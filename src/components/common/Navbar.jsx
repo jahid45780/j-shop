@@ -23,7 +23,7 @@ const Navbar = () => {
 
          <div className=" group  flex cursor-pointer flex-col" >
      
-     <Link to='/' > <li className=" text-2xl mx-2 mt-2 text-center text-black" > Our Mission  </li> </Link>
+     <Link to='/Mission' > <li className=" text-2xl mx-2 mt-2 text-center text-black" > Our Mission  </li> </Link>
          <span className="h-[3px] w-0 mt-2 rounded-full bg-black   transition-all duration-300 group-hover:w-full" ></span>
          </div>
 
@@ -89,7 +89,7 @@ const Navbar = () => {
       
       
     <div className=" text-3xl" >
-        <Link>
+        <Link to='/login' >
            <FaRegCircleUser/>
         </Link>
     </div>
