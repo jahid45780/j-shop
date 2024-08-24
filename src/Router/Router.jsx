@@ -8,6 +8,7 @@ import Trending from "../Pages/Trending/Trending";
 import Mission from "../Pages/Mission/Mission ";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
+import ProductDetail from "../Pages/Trending/ProductDetail";
 
   
  export const router = createBrowserRouter([
@@ -34,6 +35,11 @@ import SignUp from "../Pages/SignUp/SignUp";
         {
           path:'/signUp',
           element:<SignUp/>
+        },
+        {
+          path:'/detail/:id',
+          element:<ProductDetail></ProductDetail>,
+          loader:({params})=> fetch(`http://localhost:5000/product/${params.id}`)
         }
       ]
     },

@@ -2,7 +2,19 @@ import { Link } from "react-router-dom";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { GiSelfLove } from "react-icons/gi";
 import { FaRegCircleUser } from "react-icons/fa6";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 const Navbar = () => {
+
+  const { user, logOut } = useAuth()
+
+
+  const handleLogOut = ()=>{
+    logOut()
+    .then(()=>{})
+    toast.success(' LogOut Successfully ')
+    .error(error =>{error})
+}
 
     const NavLink=<>
   
@@ -77,8 +89,7 @@ const Navbar = () => {
          {/*shpoing card  */}
       <div>
     
-      
-     <div className=" flex gap-2 items-center mr-4 text-3xl" >
+        <div className=" flex gap-2 items-center mr-4 text-3xl" >
      <IoMdNotificationsOutline/>
 
       <GiSelfLove/>
@@ -87,11 +98,36 @@ const Navbar = () => {
       
      </div>
       
-      
-    <div className=" text-3xl" >
-        <Link to='/login' >
-           <FaRegCircleUser/>
-        </Link>
+         <div>
+      {
+                   user ? (<div className="dropdown  dropdown-end">
+                        <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                          <div className="w-10 rounded-full">
+                            <img src={user?.photoURL} />
+                          </div>
+                        </label>
+                        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow  bg-orange-200 rounded-box w-60">
+                          <li>
+                            <a className="justify-between">
+                              Profile
+                              <span> <img className=" w-7 h-7 rounded-full" src={user?.photoURL} alt="" /> </span>
+                            </a>
+                            <p className=" text-xl p-3 " > {user?.displayName} </p>
+                            <p className=" -ml-2  p-3 " > {user?.email} </p>
+                           
+                          </li>
+                          <button onClick={ handleLogOut } className=" btn btn-secondary mr-4 " > Log Out </button>
+                     
+                        </ul>
+                       
+                      </div>)
+                              
+                       : (<Link to='/login' > <button> <FaRegCircleUser className=" text-3xl mt-2" /> </button> </Link>  )
+                         
+                    }
+
+
+
     </div>
               
           

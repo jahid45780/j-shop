@@ -44,14 +44,14 @@ const Trending = () => {
   }
 
   useEffect(() => {
-    fetch("trending.json")
+    fetch("http://localhost:5000/product")
       .then((res) => res.json())
       .then((data) => {
         setOriginalProduct(data); // Set the original product list
         setProduct(data); // Set the product list for rendering
       });
   }, []);
-
+   
   return (
     <div className="max-w-6xl mx-auto mt-4">
       <div>
@@ -64,7 +64,7 @@ const Trending = () => {
 
       <div className="grid lg:grid-cols-3 grid-cols-1 items-center justify-center gap-3 mt">
         {currentProducts.map((product) => (
-          <ProductCart key={product.id} productCart={product} />
+          <ProductCart key={product._id} productCart={product} />
         ))}
       </div>
 
